@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MSB WINDOWS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue: #00c3ff;
+    --cyan: #00ffea;
+    --dark: #050a12;
+    --darker: #030710;
+    --card: rgba(0,195,255,0.06);
+    --border: rgba(0,195,255,0.18);
+    --glow: 0 0 18px rgba(0,195,255,0.5);
+    --glow2: 0 0 40px rgba(0,195,255,0.25);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: #d0eaff;
+    font-family: 'Exo 2', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── PARTICLES ── */
+  #particles {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    overflow: hidden;
+  }
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--blue);
+    opacity: 0;
+    animation: float-up linear infinite;
+  }
+  @keyframes float-up {
+    0%   { transform: translateY(110vh) scale(0); opacity: 0; }
+    10%  { opacity: 0.6; }
+    90%  { opacity: 0.3; }
+    100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+  }
+
+  /* ── NAVBAR ── */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2.5rem;
+    height: 64px;
+    background: rgba(5,10,18,0.82);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 900;
+    font-size: 1.2rem;
+    color: var(--blue);
+    letter-spacing: 3px;
+    text-shadow: var(--glow);
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: #8bb8d4;
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color .3s, text-shadow .3s;
+  }
+  .nav-links a:hover { color: var(--blue); text-shadow: var(--glow); }
+
+  /* ── HERO ── */
+  #home {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 6rem 1.5rem 4rem;
+  }
+  .hero-badge {
+    display: inline-block;
+    border: 1px solid var(--border);
+    border-radius: 2rem;
+    padding: .35rem 1.2rem;
+    font-size: .72rem;
+    letter-spacing: 3px;
+    color: var(--cyan);
+    text-transform: uppercase;
+    margin-bottom: 1.8rem;
+    animation: fade-in .8s ease forwards;
+    animation-delay: .2s;
+    opacity: 0;
+    background: rgba(0,255,234,0.04);
+  }
+  .hero-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2.8rem, 8vw, 6rem);
+    font-weight: 900;
+    line-height: 1;
+    color: #fff;
+    text-shadow: 0 0 60px rgba(0,195,255,0.4);
+    animation: fade-up .9s ease forwards;
+    animation-delay: .4s;
+    opacity: 0;
+  }
+  .hero-title span { color: var(--blue); }
+  .hero-sub {
+    margin-top: 1.2rem;
+    font-size: 1.05rem;
+    color: #7badc8;
+    letter-spacing: 1px;
+    animation: fade-up .9s ease forwards;
+    animation-delay: .6s;
+    opacity: 0;
+  }
+  .hero-meta {
+    display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center;
+    margin-top: 2.5rem;
+    animation: fade-up .9s ease forwards;
+    animation-delay: .8s;
+    opacity: 0;
+  }
+  .hero-chip {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: .4rem;
+    padding: .45rem 1rem;
+    font-size: .78rem;
+    color: var(--cyan);
+    letter-spacing: 1.5px;
+  }
+  .hero-cta {
+    margin-top: 3rem;
+    animation: fade-up 1s ease forwards;
+    animation-delay: 1s;
+    opacity: 0;
+  }
+  .btn-primary {
+    display: inline-block;
+    padding: .9rem 2.6rem;
+    background: linear-gradient(135deg, var(--blue), #0057ff);
+    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: .85rem;
+    letter-spacing: 2px;
+    text-decoration: none;
+    border-radius: .5rem;
+    box-shadow: var(--glow2), inset 0 1px 0 rgba(255,255,255,.15);
+    transition: box-shadow .3s, transform .2s;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-primary:hover {
+    box-shadow: 0 0 40px rgba(0,195,255,0.8), 0 0 80px rgba(0,195,255,0.3);
+    transform: translateY(-3px);
+  }
+  .scroll-indicator {
+    position: absolute; bottom: 2.5rem;
+    display: flex; flex-direction: column; align-items: center; gap: .5rem;
+    color: #3d6880; font-size: .7rem; letter-spacing: 2px;
+    animation: bounce 2s ease infinite;
+  }
+  .scroll-indicator svg { width: 20px; opacity: .6; }
+  @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(8px)} }
+
+  /* ── GRID LINES BACKGROUND ── */
+  .grid-bg {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(0,195,255,.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,195,255,.025) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  /* ── SECTIONS COMMON ── */
+  section { position: relative; z-index: 1; padding: 6rem 1.5rem; }
+  .section-label {
+    text-align: center;
+    font-size: .72rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: .8rem;
+    opacity: .7;
+  }
+  .section-title {
+    text-align: center;
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 3.5rem;
+    text-shadow: 0 0 30px rgba(0,195,255,0.3);
+  }
+
+  /* ── FEATURES (includes list) ── */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    max-width: 1000px; margin: 0 auto;
+  }
+  .feature-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: .8rem;
+    padding: 1.6rem;
+    display: flex; align-items: flex-start; gap: 1rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity .6s, transform .6s, box-shadow .3s, border-color .3s;
+  }
+  .feature-card.visible { opacity: 1; transform: translateY(0); }
+  .feature-card:hover {
+    box-shadow: var(--glow2);
+    border-color: rgba(0,195,255,0.5);
+  }
+  .feature-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    width: 2.4rem; height: 2.4rem;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .feature-text h3 { font-size: .9rem; color: #e2f4ff; margin-bottom: .3rem; }
+  .feature-text p  { font-size: .78rem; color: #5a8aab; line-height: 1.5; }
+
+  /* ── DOWNLOAD ── */
+  #download { background: rgba(0,195,255,0.02); }
+  .download-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    max-width: 860px; margin: 0 auto;
+  }
+  .dl-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    opacity: 0; transform: scale(.9);
+    transition: opacity .5s, transform .5s, box-shadow .3s;
+  }
+  .dl-card.visible { opacity: 1; transform: scale(1); }
+  .dl-card:hover { box-shadow: var(--glow2), 0 0 60px rgba(0,195,255,0.1); }
+  .dl-icon { font-size: 2.4rem; margin-bottom: 1rem; }
+  .dl-card h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: .85rem;
+    color: var(--blue);
+    letter-spacing: 2px;
+    margin-bottom: 1.2rem;
+  }
+  .dl-btn {
+    display: inline-block;
+    padding: .65rem 1.8rem;
+    border: 1px solid var(--blue);
+    color: var(--blue);
+    border-radius: .4rem;
+    text-decoration: none;
+    font-size: .8rem;
+    letter-spacing: 1.5px;
+    transition: background .3s, color .3s, box-shadow .3s;
+  }
+  .dl-btn:hover {
+    background: var(--blue);
+    color: #000;
+    box-shadow: var(--glow);
+  }
+
+  /* Telegram special */
+  .dl-card.telegram { border-color: rgba(41,182,246,0.4); }
+  .dl-card.telegram h3 { color: #29b6f6; }
+  .dl-card.telegram .dl-btn { border-color: #29b6f6; color: #29b6f6; }
+  .dl-card.telegram .dl-btn:hover { background: #29b6f6; color: #000; box-shadow: 0 0 18px rgba(41,182,246,0.6); }
+  .tg-glow { animation: tg-pulse 2.5s ease-in-out infinite; }
+  @keyframes tg-pulse {
+    0%,100% { filter: drop-shadow(0 0 6px #29b6f6) drop-shadow(0 0 12px rgba(41,182,246,.4)); }
+    50%      { filter: drop-shadow(0 0 16px #29b6f6) drop-shadow(0 0 32px rgba(41,182,246,.7)); }
+  }
+
+  /* ── HELP ── */
+  .help-cols { display: grid; grid-template-columns: repeat(auto-fit,minmax(320px,1fr)); gap: 2rem; max-width: 900px; margin: 0 auto; }
+  .help-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: .8rem;
+    padding: 2rem;
+    opacity: 0; transform: translateX(-30px);
+    transition: opacity .6s, transform .6s;
+  }
+  .help-box.right { transform: translateX(30px); }
+  .help-box.visible { opacity: 1; transform: translateX(0); }
+  .help-box h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: .9rem;
+    color: var(--blue);
+    letter-spacing: 2px;
+    margin-bottom: 1.2rem;
+    display: flex; align-items: center; gap: .6rem;
+  }
+  .help-box ol { padding-left: 1.2rem; }
+  .help-box li { font-size: .84rem; color: #7badc8; margin-bottom: .6rem; line-height: 1.5; }
+  .help-box li a { color: var(--cyan); }
+
+  /* ── ABOUT ── */
+  #about { text-align: center; }
+  .about-card {
+    display: inline-block;
+    max-width: 540px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 1.2rem;
+    padding: 3rem 2.5rem;
+    opacity: 0; transform: translateY(40px);
+    transition: opacity .7s, transform .7s;
+  }
+  .about-card.visible { opacity: 1; transform: translateY(0); }
+  .about-avatar {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    border: 2px solid var(--blue);
+    box-shadow: var(--glow);
+    margin: 0 auto 1.2rem;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+    background: rgba(0,195,255,.08);
+  }
+  .about-name {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.1rem;
+    color: #fff;
+    margin-bottom: .5rem;
+  }
+  .about-text { font-size: .86rem; color: #6a9ab8; line-height: 1.7; }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative; z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 2rem 1.5rem;
+    text-align: center;
+  }
+  .social-row { display: flex; justify-content: center; gap: 1.2rem; margin-bottom: 1rem; }
+  .social-link {
+    display: flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    color: #6a9ab8;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color .3s, border-color .3s, box-shadow .3s;
+  }
+  .social-link:hover { color: var(--blue); border-color: var(--blue); box-shadow: var(--glow); }
+  .copyright { font-size: .72rem; color: #2d5068; letter-spacing: 1px; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fade-in  { from{opacity:0} to{opacity:1} }
+  @keyframes fade-up  { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+
+  /* ── GLOWING DIVIDER ── */
+  .glow-line {
+    width: 80px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--blue), transparent);
+    margin: 0 auto 3rem;
+    box-shadow: var(--glow);
+  }
+</style>
+</head>
+<body>
+
+<!-- Background layers -->
+<div class="grid-bg"></div>
+<div id="particles"></div>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-logo">MSB WINDOWS</div>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#download">Download</a></li>
+    <li><a href="#help">Help</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="home">
+  <div class="hero-badge">Windows Custom Build • Sri Lanka</div>
+  <h1 class="hero-title">MSB<br><span>WINDOWS</span></h1>
+  <p class="hero-sub">A custom Windows 7 rebuild with modern enhancements</p>
+
+  <div class="hero-meta">
+    <div class="hero-chip">📦 1.3 GB</div>
+    <div class="hero-chip">🖥 64-Bit</div>
+    <div class="hero-chip">💿 ISO Format</div>
+    <div class="hero-chip">🌐 3 Servers</div>
+  </div>
+
+  <div class="hero-cta">
+    <a href="#download" class="btn-primary">Download Now</a>
+  </div>
+
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </div>
+</section>
+
+<!-- ── FEATURES ── -->
+<section id="features">
+  <div class="section-label">What's Included</div>
+  <h2 class="section-title">Windows Features</h2>
+  <div class="glow-line"></div>
+
+  <div class="features-grid">
+    <div class="feature-card"><div class="feature-icon">⚡</div><div class="feature-text"><h3>Auto Windows Activation</h3><p>Automatically activated — no extra steps needed.</p></div></div>
+    <div class="feature-card"><div class="feature-icon">🔷</div><div class="feature-text"><h3>Microsoft .NET Framework 4.8</h3><p>Latest .NET runtime pre-installed for app compatibility.</p></div></div>
+    <div class="feature-card"><div class="feature-icon">🎮</div><div class="feature-text"><h3>DirectX (June 2010)</h3><p>Full DirectX package for gaming and multimedia.</p></div></div>
+    <div class="feature-card"><div class="feature-icon">🔌</div><div class="feature-text"><h3>USB 3.0 Driver</h3><p>High-speed USB 3.0 support built right in.</p></div></div>
+    <div class="feature-card"><div class="feature-icon">📦</div><div class="feature-text"><h3>Visual C++ All in One</h3><p>All Microsoft Visual C++ redistributable runtimes.</p></div></div>
+    <div class="feature-card"><div class="feature-icon">🪟</div><div class="feature-text"><h3>Windows 11 Icon Pack</h3><p>Modern Windows 11-style icons on your desktop.</p></div></div>
+    <div class="feature-card"><div class="feature-icon">🚀</div><div class="feature-text"><h3>Windows 10 Boot.wim</h3><p>Faster, stable Windows 10 boot image included.</p></div></div>
+    <div class="feature-card"><div class="feature-icon">🌑</div><div class="feature-text"><h3>Windows 11 Dark Theme</h3><p>Sleek dark theme for a modern aesthetic.</p></div></div>
+    <div class="feature-card"><div class="feature-icon">🎨</div><div class="feature-text"><h3>Viewlix Theme</h3><p>Stylish Viewlix visual theme pre-applied.</p></div></div>
+    <div class="feature-card"><div class="feature-icon">🌐</div><div class="feature-text"><h3>Google Chrome</h3><p>Google Chrome browser ready to use out of the box.</p></div></div>
+    <div class="feature-card"><div class="feature-icon">🔵</div><div class="feature-text"><h3>Internet Explorer 11</h3><p>IE 11 included for legacy compatibility.</p></div></div>
+    <div class="feature-card"><div class="feature-icon">🔊</div><div class="feature-text"><h3>Windows 11 Sounds</h3><p>Modern Windows 11 system sounds for a fresh feel.</p></div></div>
+  </div>
+</section>
+
+<!-- ── DOWNLOAD ── -->
+<section id="download">
+  <div class="section-label">Get the ISO</div>
+  <h2 class="section-title">Download</h2>
+  <div class="glow-line"></div>
+
+  <div class="download-grid">
+    <div class="dl-card">
+      <div class="dl-icon">☁️</div>
+      <h3>Mediafire</h3>
+      <a class="dl-btn" href="https://www.mediafire.com/file/xfafbw4ryvflffj/Windows+7+MSB+Sri+Lanka.ISO/file" target="_blank">Download</a>
+    </div>
+
+    <div class="dl-card">
+      <div class="dl-icon">🗂️</div>
+      <h3>Google Drive</h3>
+      <a class="dl-btn" href="https://drive.google.com/file/d/1hHEtlYEyGImAmQahlKi7Rm8sXxIA0JZ8/view?usp=sharing" target="_blank">Download</a>
+    </div>
+
+    <div class="dl-card telegram">
+      <div class="dl-icon">
+        <!-- Telegram icon with glow -->
+        <svg class="tg-glow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48">
+          <circle cx="24" cy="24" r="24" fill="#29b6f6"/>
+          <path fill="#fff" d="M10.2 23.4l6.5 2.4 2.5 8.2c.2.6.9.8 1.4.4l3.6-3a1 1 0 0 1 1.2 0l6.5 4.7c.5.4 1.3.1 1.5-.5l5.1-20.4c.2-.8-.6-1.5-1.4-1.2l-26 10c-.8.3-.8 1.4.1 1.4zm9 1.6l12.4-7.6c.3-.2.6.2.3.4l-10 9.1a2 2 0 0 0-.6 1.2l-.3 2.5c-.1.5-.7.6-1 .2l-1.8-3.9a1 1 0 0 1 1-1.9z"/>
+        </svg>
+      </div>
+      <h3>Telegram</h3>
+      <a class="dl-btn" href="https://t.me/msbwindows/2" target="_blank">Download</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── HELP ── -->
+<section id="help">
+  <div class="section-label">Installation Guide</div>
+  <h2 class="section-title">How to Install</h2>
+  <div class="glow-line"></div>
+
+  <div class="help-cols">
+    <div class="help-box">
+      <h3>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--blue)"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 15h-2v-6h2zm0-8h-2V7h2z"/></svg>
+        Creating Bootable USB
+      </h3>
+      <ol>
+        <li>Download Rufus from <a href="https://rufus.ie" target="_blank">rufus.ie</a> (latest version).</li>
+        <li>Insert your USB flash drive into your computer.</li>
+        <li>Open Rufus and in "Boot selection", click <strong>Select</strong> and choose the <code>Windows 7 MSB Sri Lanka.ISO</code> file.</li>
+        <li>Set <strong>Partition Scheme</strong> to <strong>MBR</strong>.</li>
+        <li>Click <strong>Start</strong> and wait for Rufus to finish.</li>
+        <li>Once "Ready" appears — your USB is ready! ✅</li>
+      </ol>
+    </div>
+
+    <div class="help-box right">
+      <h3>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--blue)"><path d="M21 3H3a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h7v2H8v2h8v-2h-2v-2h7a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1zm-1 14H4V5h16z"/></svg>
+        Booting from USB
+      </h1>
+      <ol>
+        <li>Insert the bootable USB into your computer while it's off.</li>
+        <li>Power on and press the <strong>boot key</strong> (usually F8, F11, F12, or Del) until the BIOS/boot menu appears.</li>
+        <li>Select your <strong>USB flash drive</strong> from the boot menu.</li>
+        <li>Press <strong>Enter</strong> to boot from USB and begin installation.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ── ABOUT ── -->
+<section id="about">
+  <div class="section-label">The Developer</div>
+  <h2 class="section-title">About</h2>
+  <div class="glow-line"></div>
+
+  <div class="about-card">
+    <div class="about-avatar">👨‍💻</div>
+    <div class="about-name">Manoj Senevirathna Bamunuge</div>
+    <p class="about-text">
+      Hi, I'm <strong style="color:#e2f4ff">Manoj</strong>! This operating system was custom rebuilt by me.
+      If you find any errors in this Windows build, please contact me — I'll fix them in the next update.
+      Install it and share with your friends. Thank you ❤️
+    </p>
+    <div class="social-row" style="margin-top:1.5rem">
+      <a class="social-link" href="https://www.facebook.com/manojsenevirathna.bamunuge.9" target="_blank" title="Facebook">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      </a>
+      <a class="social-link" href="https://www.instagram.com/mano_sene" target="_blank" title="Instagram">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      </a>
+      <a class="social-link tg-glow" href="https://t.me/msbwindows" target="_blank" title="Telegram" style="border-color:#29b6f6;color:#29b6f6">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.93 8.2l-2.04 9.6c-.15.68-.55.84-1.12.52l-3.1-2.28-1.5 1.44c-.16.16-.3.3-.62.3l.22-3.14 5.72-5.17c.25-.22-.05-.34-.38-.12L7.5 14.22l-3.04-.95c-.66-.2-.67-.66.14-.98l11.87-4.57c.55-.2 1.03.13.86.78-.3 1.4-.5 2.35-.5 2.35l-.1.35v-.01z"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <p class="copyright">COPYRIGHT ©2024 MANOJ SENEVIRATHNA BAMUNUGE — ALL RIGHTS RESERVED</p>
+</footer>
+
+<script>
+// ── Particles ──
+(function(){
+  const el = document.getElementById('particles');
+  for(let i=0;i<35;i++){
+    const p = document.createElement('div');
+    p.className='particle';
+    const s = Math.random()*4+2;
+    p.style.cssText=`
+      width:${s}px;height:${s}px;
+      left:${Math.random()*100}%;
+      animation-duration:${8+Math.random()*14}s;
+      animation-delay:${Math.random()*12}s;
+      opacity:0;
+    `;
+    el.appendChild(p);
+  }
+})();
+
+// ── Scroll reveal ──
+const obs = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add('visible');
+  });
+},{threshold:0.12});
+
+document.querySelectorAll('.feature-card,.dl-card,.help-box,.about-card')
+  .forEach((el,i)=>{
+    el.style.transitionDelay = (i % 4)*0.1+'s';
+    obs.observe(el);
+  });
+</script>
+</body>
+</html>
