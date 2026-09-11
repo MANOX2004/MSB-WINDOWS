@@ -13,7 +13,6 @@
 
 ## ✅ What's Included
 
-- ⚡ Auto Windows Activation
 - 🔷 Microsoft .NET Framework 4.8
 - 🎮 DirectX (June 2010)
 - 🔌 USB 3.0 Driver
